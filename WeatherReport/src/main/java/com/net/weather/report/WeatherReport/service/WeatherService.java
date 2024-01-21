@@ -27,7 +27,7 @@ public class WeatherService {
 	@Autowired
 	private WeatherDao dao;
 
-//	ObjectMapper mapper = new ObjectMapper();
+
 	@Autowired
 	ObjectMapper mapper;
 
@@ -42,16 +42,11 @@ public class WeatherService {
 
 	public WeatherData getWeather(String city) {
 
-//		String encodedCity = URLEncoder.encode(city, StandardCharsets.UTF_8);
-
 		String endPoint = String.format(api_Url, city, apiKey);
-		System.out.println("Endpoints :: " + endPoint);
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(endPoint)).build();
-		System.out.println("weather request :: " + request);
 		try {
 			HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-			System.out.println("weather response String :: " + response.body());
 			WeatherData weatherData = mapper.readValue(response.body(), WeatherData.class);
 
 			if (weatherData != null) {
@@ -64,7 +59,6 @@ public class WeatherService {
 			return weatherData;
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -76,6 +70,7 @@ public class WeatherService {
 	}
 
 	public WeatherEntity getWeatherInfoUsingId(long id) {
+		
 		return dao.getWeatherInfoUsingId(id);
 	}
 }

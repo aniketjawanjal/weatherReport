@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.net.weather.report.WeatherReport.entity.WeatherEntity;
+import com.net.weather.report.WeatherReport.exceptionHandler.ResourceNotFoundException;
 import com.net.weather.report.WeatherReport.repository.WeatherRepo;
 
 @Repository
@@ -22,6 +23,8 @@ public class WeatherDao {
 	}
 
 	public WeatherEntity getWeatherInfoUsingId(long id) {
-		return repo.findById(id).get();
+		WeatherEntity WeatherEntity = repo.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Weather", "ID :", id));
+		return WeatherEntity;
 	}
 }
